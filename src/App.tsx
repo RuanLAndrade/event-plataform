@@ -1,10 +1,33 @@
-import './styles/global.css';
+import { gql, useQuery } from "@apollo/client";
+import Lesson from "./components/Lesson";
 
-function App() {
+import Event from './pages/Event';
 
-  return (
-    <h1 className="text-2xl font-bold">Hello WOrld</h1>
-  )
+const GET_LESSONS_QUERY = gql`
+  query {
+    lessons {
+      id
+      title
+    }
+  }
+`;
+
+interface Lesson {
+  id: string;
+  title: string;
 }
 
-export default App
+function App() {
+  const { data } = useQuery<{ lessons: Lesson[] }>(GET_LESSONS_QUERY);
+
+  return (
+    <Event />
+    // <ul>
+    //   {data?.lessons.map(lesson => {
+    //     return <li key={lesson.id}>{lesson.title}</li>
+    //   })}
+    // </ul>
+  );
+}
+
+export default App;
